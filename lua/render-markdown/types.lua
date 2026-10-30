@@ -293,6 +293,7 @@
 ---@field max_table_width? integer
 ---@field border? string[]
 ---@field border_enabled? boolean
+---@field row_borders? boolean
 ---@field border_virtual? boolean
 ---@field alignment_indicator? string
 ---@field head? string

@@ -1641,6 +1641,7 @@ M.pipe_table = {}
 ---@field max_table_width integer
 ---@field border string[]
 ---@field border_enabled boolean
+---@field row_borders boolean
 ---@field border_virtual boolean
 ---@field alignment_indicator string
 ---@field head string
@@ -1717,6 +1718,8 @@ M.pipe_table.default = {
     },
     -- Turn on / off top & bottom lines.
     border_enabled = true,
+    -- Draw a line between body rows, using the delimiter border characters.
+    row_borders = false,
     -- Always use virtual lines for table borders instead of attempting to use empty lines.
     -- Will be automatically enabled if indentation module is enabled.
     border_virtual = false,
@@ -1745,6 +1748,7 @@ function M.pipe_table.schema()
         max_table_width = { type = 'number' },
         border = { list = { type = 'string' } },
         border_enabled = { type = 'boolean' },
+        row_borders = { type = 'boolean' },
         border_virtual = { type = 'boolean' },
         alignment_indicator = { type = 'string' },
         head = { type = 'string' },
