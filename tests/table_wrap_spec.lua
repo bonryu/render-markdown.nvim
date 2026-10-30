@@ -263,6 +263,76 @@ describe('table wrapping', function()
         })
     end)
 
+    it('does not stretch table that fits', function()
+        vim.o.columns = 80
+        util.setup.text({
+            'BEFORE',
+            '',
+            '| Name     | Link                              |',
+            '| -------- | --------------------------------- |',
+            '| **bold** | [a](https://example.com/long/url) |',
+            '| x        | y                                 |',
+            '',
+            'AFTER',
+        }, {
+            pipe_table = { cell = 'fit', right_margin = 2, row_borders = true },
+        })
+        util.assert_screen({
+            'BEFORE',
+            '┌──────┬──────┐',
+            '│ Name │ Link │',
+            '├──────┼──────┤',
+            '│ bold │ 󰖟 a  │',
+            '├──────┼──────┤',
+            '│ x    │ y    │',
+            '└──────┴──────┘',
+            'AFTER',
+        })
+    end)
+
+    it('does not wrap when table exactly fits within margin', function()
+        util.setup.text({
+            'BEFORE',
+            '',
+            '| A | B |',
+            '| - | - |',
+            '| x | aaaa bbbb cccc dddd eeee fffff |',
+            '',
+            'AFTER',
+        }, { pipe_table = { cell = 'fit', right_margin = 2 } })
+        util.assert_screen({
+            'BEFORE',
+            '┌───┬────────────────────────────────┐',
+            '│ A │ B                              │',
+            '├───┼────────────────────────────────┤',
+            '│ x │ aaaa bbbb cccc dddd eeee fffff │',
+            '└───┴────────────────────────────────┘',
+            'AFTER',
+        })
+    end)
+
+    it('wraps when table is one over the margin', function()
+        util.setup.text({
+            'BEFORE',
+            '',
+            '| A | B |',
+            '| - | - |',
+            '| x | aaaa bbbb cccc dddd eeee ffff g |',
+            '',
+            'AFTER',
+        }, { pipe_table = { cell = 'fit', right_margin = 2 } })
+        util.assert_screen({
+            'BEFORE',
+            '┌───┬────────────────────────────────┐',
+            '│ A │ B                              │',
+            '├───┼────────────────────────────────┤',
+            '│ x │ aaaa bbbb cccc dddd eeee ffff  │',
+            '│   │ g                              │',
+            '└───┴────────────────────────────────┘',
+            'AFTER',
+        })
+    end)
+
     it('row borders with fit', function()
         util.setup.text({
             'BEFORE',
