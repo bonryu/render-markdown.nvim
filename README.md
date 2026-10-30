@@ -730,6 +730,8 @@ require('render-markdown').setup({
         -- Maximum width of the whole table to use for fit cell, wrapping cells to stay within it.
         -- Tables are always limited by the window, 0 means there is no additional limit.
         max_table_width = 0,
+        -- Amount of space to keep between wrapped tables and the right edge of the window.
+        right_margin = 0,
         -- Characters used to replace table border.
         -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal.
         -- stylua: ignore
@@ -1512,6 +1514,8 @@ require('render-markdown').setup({
         -- Maximum width of the whole table to use for fit cell, wrapping cells to stay within it.
         -- Tables are always limited by the window, 0 means there is no additional limit.
         max_table_width = 0,
+        -- Amount of space to keep between wrapped tables and the right edge of the window.
+        right_margin = 0,
         -- Characters used to replace table border.
         -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal.
         -- stylua: ignore

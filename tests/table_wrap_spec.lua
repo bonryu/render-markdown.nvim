@@ -239,6 +239,30 @@ describe('table wrapping', function()
         })
     end)
 
+    it('right margin', function()
+        util.setup.text({
+            'BEFORE',
+            '',
+            '| A | B |',
+            '| - | - |',
+            '| x | one two three four five six seven eight nine ten eleven |',
+            '| y | short |',
+            '',
+            'AFTER',
+        }, { pipe_table = { cell = 'fit', right_margin = 2 } })
+        util.assert_screen({
+            'BEFORE',
+            '┌───┬────────────────────────────────┐',
+            '│ A │ B                              │',
+            '├───┼────────────────────────────────┤',
+            '│ x │ one two three four five six    │',
+            '│   │ seven eight nine ten eleven    │',
+            '│ y │ short                          │',
+            '└───┴────────────────────────────────┘',
+            'AFTER',
+        })
+    end)
+
     it('row borders with fit', function()
         util.setup.text({
             'BEFORE',

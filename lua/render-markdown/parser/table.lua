@@ -201,6 +201,7 @@ function Parser:parse(root, marks)
 
         local fit = self.config.cell == 'fit'
         local budget = env.win.width(self.context.win)
+        budget = budget - self.config.right_margin
         if fit and self.config.max_table_width > 0 then
             budget = math.min(budget, self.config.max_table_width)
         end

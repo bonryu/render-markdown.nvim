@@ -1639,6 +1639,7 @@ M.pipe_table = {}
 ---@field padding integer
 ---@field min_width integer
 ---@field max_table_width integer
+---@field right_margin integer
 ---@field border string[]
 ---@field border_enabled boolean
 ---@field row_borders boolean
@@ -1707,6 +1708,8 @@ M.pipe_table.default = {
     -- Maximum width of the whole table to use for fit cell, wrapping cells to stay within it.
     -- Tables are always limited by the window, 0 means there is no additional limit.
     max_table_width = 0,
+    -- Amount of space to keep between wrapped tables and the right edge of the window.
+    right_margin = 0,
     -- Characters used to replace table border.
     -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal.
     -- stylua: ignore
@@ -1746,6 +1749,7 @@ function M.pipe_table.schema()
         padding = { type = 'number' },
         min_width = { type = 'number' },
         max_table_width = { type = 'number' },
+        right_margin = { type = 'number' },
         border = { list = { type = 'string' } },
         border_enabled = { type = 'boolean' },
         row_borders = { type = 'boolean' },

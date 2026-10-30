@@ -291,6 +291,7 @@
 ---@field padding? integer
 ---@field min_width? integer
 ---@field max_table_width? integer
+---@field right_margin? integer
 ---@field border? string[]
 ---@field border_enabled? boolean
 ---@field row_borders? boolean
