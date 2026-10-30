@@ -469,4 +469,122 @@ describe('table wrapping', function()
             'AFTER',
         })
     end)
+
+    describe('fit', function()
+        local long = {
+            'BEFORE',
+            '',
+            '| ID | Summary | Details |',
+            '| -- | ------- | ------- |',
+            '| 1 | alpha beta gamma delta epsilon | one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen |',
+            '',
+            'AFTER',
+        }
+
+        it('gives longer columns more space', function()
+            util.setup.text(long, { pipe_table = { cell = 'fit' } })
+            util.assert_screen({
+                'BEFORE',
+                '┌────┬────────────┬────────────────────┐',
+                '│ ID │ Summary    │ Details            │',
+                '├────┼────────────┼────────────────────┤',
+                '│ 1  │ alpha beta │ one two three four │',
+                '│    │ gamma      │ five six seven     │',
+                '│    │ delta      │ eight nine ten     │',
+                '│    │ epsilon    │ eleven twelve      │',
+                '│    │            │ thirteen fourteen  │',
+                '│    │            │ fifteen sixteen    │',
+                '└────┴────────────┴────────────────────┘',
+                'AFTER',
+            })
+        end)
+
+        it('ignores source delimiter and spacing', function()
+            util.setup.text({
+                'BEFORE',
+                '',
+                '| A                    | B   |',
+                '| -------------------- | --- |',
+                '| x                    | y   |',
+                '',
+                'AFTER',
+            }, { pipe_table = { cell = 'fit' } })
+            util.assert_screen({
+                'BEFORE',
+                '┌───┬───┐',
+                '│ A │ B │',
+                '├───┼───┤',
+                '│ x │ y │',
+                '└───┴───┘',
+                'AFTER',
+            })
+        end)
+
+        it('wraps to stay within max table width', function()
+            util.setup.text({
+                'BEFORE',
+                '',
+                '| A | B |',
+                '| - | - |',
+                '| x | one two three four five six |',
+                '',
+                'AFTER',
+            }, {
+                pipe_table = { cell = 'fit', max_table_width = 20 },
+            })
+            util.assert_screen({
+                'BEFORE',
+                '┌───┬──────────────┐',
+                '│ A │ B            │',
+                '├───┼──────────────┤',
+                '│ x │ one two      │',
+                '│   │ three four   │',
+                '│   │ five six     │',
+                '└───┴──────────────┘',
+                'AFTER',
+            })
+        end)
+
+        it('breaks words when they cannot all fit', function()
+            vim.o.columns = 20
+            util.setup.text({
+                'BEFORE',
+                '',
+                '| A | B |',
+                '| - | - |',
+                '| abcdefghijkl | mnopqrstuvwx |',
+                '',
+                'AFTER',
+            }, { pipe_table = { cell = 'fit' } })
+            util.assert_screen({
+                'BEFORE',
+                '┌─────────┬────────┐',
+                '│ A       │ B      │',
+                '├─────────┼────────┤',
+                '│ abcdefg │ mnopqr │',
+                '│ hijkl   │ stuvwx │',
+                '└─────────┴────────┘',
+                'AFTER',
+            })
+        end)
+
+        it('conceallevel 1', function()
+            vim.o.wrap = false
+            util.setup.text(mixed, {
+                pipe_table = { cell = 'fit' },
+                win_options = { conceallevel = { rendered = 1 } },
+            })
+            util.assert_screen({
+                'BEFORE',
+                '┌───┬───┬───────────────────────────────',
+                '│ A │ B │',
+                '├━──┼━─━┼───────────────────────────────',
+                '│ x │ y │',
+                '│ z │ w │ one two three four five six se',
+                '│ a │ b │',
+                '└───┴───┴───────────────────────────────',
+                'AFTER',
+            })
+        end)
+    end)
 end)
